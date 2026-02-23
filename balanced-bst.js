@@ -32,6 +32,17 @@ class Tree {
 
     return rootNode;
   }
+
+  includes(value) {
+    let node = this.root;
+
+    while (node !== null && node.data !== value) {
+      if (node.data > value) node = node.leftChild;
+      else node = node.rightChild;
+    }
+
+    return node !== null;
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
