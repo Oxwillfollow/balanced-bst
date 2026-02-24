@@ -33,6 +33,15 @@ class Tree {
     return rootNode;
   }
 
+  #getSuccessor(node) {
+    node = node.rightChild;
+    while (node !== null && node.leftChild !== null) {
+      node = node.leftChild;
+    }
+
+    return node;
+  }
+
   includes(value) {
     let node = this.root;
 
@@ -42,6 +51,40 @@ class Tree {
     }
 
     return node !== null;
+  }
+
+  deleteItem(value) {
+    let node = this.root;
+    let parentNode = null;
+
+    // find the node with given value
+    while (node !== null && node.data !== value) {
+      parentNode = node;
+      if (node.data > value) node = node.leftChild;
+      else node = node.rightChild;
+    }
+
+    if (node !== null) {
+      if (node.leftChild === null && node.rightChild === null) {
+        // if has no children
+        if (this.root === node) this.root = null;
+        else if (parentNode.data > node.data) parentNode.leftChild = null;
+        else parentNode.rightChild = null;
+      } else if (node.leftChild !== null && node.rightChild === null) {
+        // if only has a left child
+        if (parentNode.data > node.data) parentNode.leftChild = node.leftChild;
+        else parentNode.rightChild = node.leftChild;
+      } else if (node.rightChild !== null && node.leftChild === null) {
+        // if only has a right child
+        if (parentNode.data > node.data) parentNode.leftChild = node.rightChild;
+        else parentNode.rightChild = node.rightChild;
+      } else {
+        // if has a left and right child, replace with node which is successor in value and recursively replace it with its own child
+        let successor = this.#getSuccessor(node);
+        this.deleteItem(successor.data);
+        node.data = successor.data;
+      }
+    }
   }
 }
 
@@ -55,7 +98,13 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   prettyPrint(node.leftChild, `${prefix}${isLeft ? "    " : "│   "}`, true);
 };
 
-const myTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+const myTree = new Tree([8, 7, 22, 7, 1, 5, 6695, 254]);
+
+prettyPrint(myTree.root);
+
+console.log("deleting 8");
+
+myTree.deleteItem(8);
 
 prettyPrint(myTree.root);
 
