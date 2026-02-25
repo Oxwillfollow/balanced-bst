@@ -1,4 +1,3 @@
-import expect from "expect";
 import { Tree } from "./balanced-bst";
 
 test("includes", () => {
@@ -13,4 +12,13 @@ test("deleteItem", () => {
   myTree.deleteItem(40);
 
   expect(myTree.includes(40)).toBe(false);
+});
+
+test("levelOrderForEach", () => {
+  const myTree = new Tree([10, 20, 30, 40, 45, 50]);
+
+  let testData = [];
+  myTree.levelOrderForEach((data) => testData.push(data));
+
+  expect(testData).toEqual([30, 10, 45, 20, 40, 50]);
 });

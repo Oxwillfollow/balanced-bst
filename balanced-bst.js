@@ -8,7 +8,7 @@ class Node {
 }
 
 class Tree {
-  root = undefined;
+  root = null;
 
   constructor(array) {
     // sort array and remove duplicates
@@ -55,9 +55,9 @@ class Tree {
 
   deleteItem(value) {
     let node = this.root;
-    let parentNode = null;
+    let parentNode = null; // reference to the parent node to be able to delete the node from the tree
 
-    // find the node with given value
+    // find the node with given value in tree
     while (node !== null && node.data !== value) {
       parentNode = node;
       if (node.data > value) node = node.leftChild;
@@ -66,24 +66,48 @@ class Tree {
 
     if (node !== null) {
       if (node.leftChild === null && node.rightChild === null) {
-        // if has no children
+        // if has no children - set the node to null
         if (this.root === node) this.root = null;
         else if (parentNode.data > node.data) parentNode.leftChild = null;
         else parentNode.rightChild = null;
       } else if (node.leftChild !== null && node.rightChild === null) {
-        // if only has a left child
+        // if only has a left child - replace with left child
         if (parentNode.data > node.data) parentNode.leftChild = node.leftChild;
         else parentNode.rightChild = node.leftChild;
       } else if (node.rightChild !== null && node.leftChild === null) {
-        // if only has a right child
+        // if only has a right child - replace with right child
         if (parentNode.data > node.data) parentNode.leftChild = node.rightChild;
         else parentNode.rightChild = node.rightChild;
       } else {
-        // if has a left and right child, replace with node which is successor in value and recursively replace it with its own child
+        // if has a left and right child, replace with descendant which is the successor in value (eg. in tree of numbers 1-10 replacing 7 with 8)
         let successor = this.#getSuccessor(node);
         this.deleteItem(successor.data);
         node.data = successor.data;
       }
+    }
+  }
+
+  levelOrderForEach(callback) {
+    // traverse breadth-first and invoke callback(value) on each node
+    if (callback === undefined || typeof callback !== "function")
+      throw Error("Callback function is required!");
+
+    if (!this.root) return;
+
+    let queue = [];
+
+    let node = this.root;
+    callback(node.data);
+
+    if (node.leftChild) queue.push(node.leftChild);
+    if (node.rightChild) queue.push(node.rightChild);
+
+    while (queue.length > 0) {
+      node = queue.shift();
+      callback(node.data);
+
+      if (node.leftChild) queue.push(node.leftChild);
+      if (node.rightChild) queue.push(node.rightChild);
     }
   }
 }
@@ -98,14 +122,10 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   prettyPrint(node.leftChild, `${prefix}${isLeft ? "    " : "│   "}`, true);
 };
 
-const myTree = new Tree([8, 7, 22, 7, 1, 5, 6695, 254]);
+const myTree = new Tree([10, 20, 30, 40, 45, 50]);
 
 prettyPrint(myTree.root);
 
-console.log("deleting 8");
-
-myTree.deleteItem(8);
-
-prettyPrint(myTree.root);
+myTree.levelOrderForEach((data) => console.log(data));
 
 export { Tree };
