@@ -53,6 +53,44 @@ class Tree {
     return node !== null;
   }
 
+  height(value) {
+    let node = this.root;
+
+    while (node !== null && node.data !== value) {
+      if (node.data > value) node = node.leftChild;
+      else node = node.rightChild;
+    }
+
+    if (!node) return undefined;
+
+    return this.#countHeightRecursively(node);
+  }
+
+  depth(value) {
+    let node = this.root;
+    let depth = 0;
+
+    while (node !== null && node.data !== value) {
+      if (node.data > value) node = node.leftChild;
+      else node = node.rightChild;
+      depth++;
+    }
+
+    if (!node) return undefined;
+
+    return depth;
+  }
+
+  #countHeightRecursively(node, height = -1) {
+    if (node === null) return height;
+
+    let left = this.#countHeightRecursively(node.leftChild, height + 1);
+    let right = this.#countHeightRecursively(node.rightChild, height + 1);
+
+    if (left > right) return left;
+    else return right;
+  }
+
   deleteItem(value) {
     let node = this.root;
     let parentNode = null; // reference to the parent node to be able to delete the node from the tree
@@ -173,13 +211,5 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 const myTree = new Tree([10, 20, 30, 40, 45, 50]);
 
 prettyPrint(myTree.root);
-
-myTree.levelOrderForEach((data) => console.log(data));
-console.log("now in order");
-myTree.inOrderForEach((data) => console.log(data));
-console.log("now pre order");
-myTree.preOrderForEach((data) => console.log(data));
-console.log("now post order");
-myTree.postOrderForEach((data) => console.log(data));
 
 export { Tree };

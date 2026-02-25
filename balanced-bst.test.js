@@ -37,3 +37,11 @@ test("inOrderForEach, preOrderForEach, postOrderForEach", () => {
   expect(dataPreOrder).toEqual([30, 10, 20, 45, 40, 50]);
   expect(dataPostOrder).toEqual([20, 10, 40, 50, 45, 30]);
 });
+
+test("height, depth", () => {
+  const myTree = new Tree([10, 20, 30, 40, 45, 50]);
+  expect(myTree.height(30)).toBe(2);
+  expect(myTree.depth(30)).toBe(0);
+  expect(myTree.height(50)).toBe(0);
+  expect(myTree.depth(50)).toBe(2);
+});
