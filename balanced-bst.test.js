@@ -17,8 +17,23 @@ test("deleteItem", () => {
 test("levelOrderForEach", () => {
   const myTree = new Tree([10, 20, 30, 40, 45, 50]);
 
-  let testData = [];
-  myTree.levelOrderForEach((data) => testData.push(data));
+  let dataLevelorder = [];
+  myTree.levelOrderForEach((data) => dataLevelorder.push(data));
 
-  expect(testData).toEqual([30, 10, 45, 20, 40, 50]);
+  expect(dataLevelorder).toEqual([30, 10, 45, 20, 40, 50]);
+});
+
+test("inOrderForEach, preOrderForEach, postOrderForEach", () => {
+  const myTree = new Tree([10, 20, 30, 40, 45, 50]);
+
+  let dataInOrder = [];
+  let dataPreOrder = [];
+  let dataPostOrder = [];
+  myTree.inOrderForEach((data) => dataInOrder.push(data));
+  myTree.preOrderForEach((data) => dataPreOrder.push(data));
+  myTree.postOrderForEach((data) => dataPostOrder.push(data));
+
+  expect(dataInOrder).toEqual([10, 20, 30, 40, 45, 50]);
+  expect(dataPreOrder).toEqual([30, 10, 20, 45, 40, 50]);
+  expect(dataPostOrder).toEqual([20, 10, 40, 50, 45, 30]);
 });

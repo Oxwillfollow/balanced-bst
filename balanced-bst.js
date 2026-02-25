@@ -110,6 +110,54 @@ class Tree {
       if (node.rightChild) queue.push(node.rightChild);
     }
   }
+
+  inOrderForEach(callback) {
+    if (callback === undefined || typeof callback !== "function")
+      throw Error("Callback function is required!");
+
+    // traverse left subtree, call node, traverse right subtree
+    this.#traverseRecursively(this.root, callback);
+  }
+
+  preOrderForEach(callback) {
+    if (callback === undefined || typeof callback !== "function")
+      throw Error("Callback function is required!");
+
+    // traverse left subtree, call node, traverse right subtree
+    this.#traverseRecursivelyPreOrder(this.root, callback);
+  }
+
+  postOrderForEach(callback) {
+    if (callback === undefined || typeof callback !== "function")
+      throw Error("Callback function is required!");
+
+    // traverse left subtree, call node, traverse right subtree
+    this.#traverseRecursivelyPostOrder(this.root, callback);
+  }
+
+  #traverseRecursively(node = this.root, callback) {
+    if (node === null) return;
+
+    this.#traverseRecursively(node.leftChild, callback);
+    callback(node.data);
+    this.#traverseRecursively(node.rightChild, callback);
+  }
+
+  #traverseRecursivelyPreOrder(node = this.root, callback) {
+    if (node === null) return;
+
+    callback(node.data);
+    this.#traverseRecursivelyPreOrder(node.leftChild, callback);
+    this.#traverseRecursivelyPreOrder(node.rightChild, callback);
+  }
+
+  #traverseRecursivelyPostOrder(node = this.root, callback) {
+    if (node === null) return;
+
+    this.#traverseRecursivelyPostOrder(node.leftChild, callback);
+    this.#traverseRecursivelyPostOrder(node.rightChild, callback);
+    callback(node.data);
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -127,5 +175,11 @@ const myTree = new Tree([10, 20, 30, 40, 45, 50]);
 prettyPrint(myTree.root);
 
 myTree.levelOrderForEach((data) => console.log(data));
+console.log("now in order");
+myTree.inOrderForEach((data) => console.log(data));
+console.log("now pre order");
+myTree.preOrderForEach((data) => console.log(data));
+console.log("now post order");
+myTree.postOrderForEach((data) => console.log(data));
 
 export { Tree };
