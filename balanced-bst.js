@@ -91,6 +91,23 @@ class Tree {
     else return right;
   }
 
+  insert(value) {
+    let node = this.root;
+    let nodeParent;
+
+    while (node !== null) {
+      if (node.data === value) return;
+
+      nodeParent = node;
+
+      if (node.data > value) node = node.leftChild;
+      else node = node.rightChild;
+    }
+
+    if (nodeParent.data > value) nodeParent.leftChild = new Node(value);
+    else nodeParent.rightChild = new Node(value);
+  }
+
   deleteItem(value) {
     let node = this.root;
     let parentNode = null; // reference to the parent node to be able to delete the node from the tree
@@ -209,6 +226,10 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 };
 
 const myTree = new Tree([10, 20, 30, 40, 45, 50]);
+
+prettyPrint(myTree.root);
+
+myTree.insert(11);
 
 prettyPrint(myTree.root);
 

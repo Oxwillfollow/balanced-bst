@@ -6,6 +6,14 @@ test("includes", () => {
   expect(myTree.includes(67)).toBe(true);
 });
 
+test("insert", () => {
+  const myTree = new Tree([10, 20, 30, 40, 45, 50, 60, 65, 70]);
+
+  myTree.insert(100);
+
+  expect(myTree.includes(100)).toBe(true);
+});
+
 test("deleteItem", () => {
   const myTree = new Tree([10, 20, 30, 40, 45, 50, 60, 65, 70]);
 
