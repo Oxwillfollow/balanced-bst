@@ -170,15 +170,12 @@ class Tree {
     if (callback === undefined || typeof callback !== "function")
       throw Error("Callback function is required!");
 
-    // traverse left subtree, call node, traverse right subtree
     this.#traverseRecursively(this.root, callback);
   }
 
   preOrderForEach(callback) {
     if (callback === undefined || typeof callback !== "function")
       throw Error("Callback function is required!");
-
-    // traverse left subtree, call node, traverse right subtree
     this.#traverseRecursivelyPreOrder(this.root, callback);
   }
 
@@ -186,7 +183,6 @@ class Tree {
     if (callback === undefined || typeof callback !== "function")
       throw Error("Callback function is required!");
 
-    // traverse left subtree, call node, traverse right subtree
     this.#traverseRecursivelyPostOrder(this.root, callback);
   }
 
@@ -219,7 +215,7 @@ class Tree {
   }
 
   #isBalancedRecursively(node = this.root) {
-    if (node === null) return true; // base case
+    if (node === null) return true;
 
     // get height diff of subtree left and subtree right
     let left = this.#countHeightRecursively(node.leftChild);
@@ -260,23 +256,5 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 const myTree = new Tree([10, 20, 30, 40, 45, 50]);
 
 prettyPrint(myTree.root);
-
-console.log(myTree.isBalanced());
-
-myTree.insert(33);
-myTree.insert(34);
-myTree.insert(35);
-myTree.insert(36);
-myTree.insert(37);
-
-prettyPrint(myTree.root);
-
-console.log(myTree.isBalanced());
-
-myTree.rebalance();
-
-prettyPrint(myTree.root);
-
-console.log(myTree.isBalanced());
 
 export { Tree };
