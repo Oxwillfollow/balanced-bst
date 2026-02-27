@@ -53,3 +53,15 @@ test("height, depth", () => {
   expect(myTree.height(50)).toBe(0);
   expect(myTree.depth(50)).toBe(2);
 });
+
+test("isBalanced, rebalance", () => {
+  const myTree = new Tree([10, 20, 30, 40, 45, 50, 60, 65, 70]);
+
+  myTree.insert(100, 101, 102, 103, 104);
+
+  expect(myTree.isBalanced()).toBe(false);
+
+  myTree.rebalance();
+
+  expect(myTree.isBalanced()).toBe(true);
+});

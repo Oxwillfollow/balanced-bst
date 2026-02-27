@@ -213,6 +213,38 @@ class Tree {
     this.#traverseRecursivelyPostOrder(node.rightChild, callback);
     callback(node.data);
   }
+
+  isBalanced() {
+    return this.#isBalancedRecursively();
+  }
+
+  #isBalancedRecursively(node = this.root) {
+    if (node === null) return true; // base case
+
+    // get height diff of subtree left and subtree right
+    let left = this.#countHeightRecursively(node.leftChild);
+    let right = this.#countHeightRecursively(node.rightChild);
+
+    let difference = Math.abs(left - right);
+    if (difference > 1) return false;
+
+    // do this for each node in the tree
+    return (
+      this.#isBalancedRecursively(node.leftChild) &&
+      this.#isBalancedRecursively(node.rightChild)
+    );
+  }
+
+  rebalance() {
+    let nodes = [];
+
+    // traverse in order to get a sorted array
+    this.#traverseRecursively(this.root, function (data) {
+      nodes.push(data);
+    });
+
+    this.root = this.#buildTree(nodes, 0, nodes.length - 1);
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -229,8 +261,22 @@ const myTree = new Tree([10, 20, 30, 40, 45, 50]);
 
 prettyPrint(myTree.root);
 
-myTree.insert(11);
+console.log(myTree.isBalanced());
+
+myTree.insert(33);
+myTree.insert(34);
+myTree.insert(35);
+myTree.insert(36);
+myTree.insert(37);
 
 prettyPrint(myTree.root);
+
+console.log(myTree.isBalanced());
+
+myTree.rebalance();
+
+prettyPrint(myTree.root);
+
+console.log(myTree.isBalanced());
 
 export { Tree };
